@@ -47,16 +47,40 @@ section = [2, 3, 6]
 # section이 오름차순으로 정렬되있다고 하니깐
 # section[0]은 무조건 칠하는 첫번째 요소, 거기서 m길이만큼은 무조건 칠해짐
 # 그걸 변수로 나타내면
-a= section[0]+m-1
 # 여기서 a보다 작으면 section에서 제거
 
-# 이걸 반복해서 section이 없으면 clear
-answer=1
-for i in section:
-    if i> a : 
-        answer+=1
-        a = i+m-1
-
-
+answer = 0
+for j in range((n/m)+1):
+    answer += 1
+    a= section[0]+m-1
+    for i in section[:]:
+        if i <= a : del section[section.index(i)]
+    if section==[]:break
 print(answer)
+# 이걸 반복해서 section이 없으면 clear
 
+def solution(n, m, section):
+    answer = 0
+    for j in range(int(n/m)+1):
+        answer += 1
+        a= section[0]+m-1
+        for i in section[:]:
+            if i <= a : del section[section.index(i)]
+        if section==[]:break
+    return answer
+
+# answer=1
+# for i in section:
+#     if i> a : 
+#         answer+=1
+#         a = i+m-1
+
+# 제출용 함수
+def solution2(n, m, section):
+    answer=1
+    a= section[0]+m-1
+    for i in section:
+        if i> a : 
+            answer+=1
+            a = i+m-1
+    return answer
