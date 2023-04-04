@@ -20,6 +20,7 @@
 n = 6
 
 answer = 0
+# 문제 조건에 따라 while문 만들기 
 while n!=1 and answer < 500:
     if n%2==0:
         n /=2
