@@ -34,7 +34,7 @@
 # targets의 원소는 알파벳 대문자로만 이루어져 있습니다.
 
 keymap = ["AA"]
-targets = 	["B"]
+targets = ["B"]
 
 # 필요한 애들 정의
 answer = []
