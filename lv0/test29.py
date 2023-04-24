@@ -11,8 +11,9 @@
 # my_string에는 숫자가 한 개 이상 포함되어 있습니다.
 # my_string은 영어 소문자 또는 0부터 9까지의 숫자로 이루어져 있습니다.
 
+my_string = "p2o4i8gj2"
+
 # isnumeric으로 숫자인지 확인 후 맞으면 asnwer에 추가
-my_string = "hi12392"
 answer = []
 for i in my_string:
     if i.isnumeric() : answer.append(int(i))
@@ -24,5 +25,27 @@ def solution(my_string):
     answer = []
     for i in my_string:
         if i.isnumeric()==True: answer.append(int(i))
+    answer.sort()
+    return answer
+
+# 풀었던 문제 다른방법으로 풀기
+# try - except로 풀면 어떨까?
+answer = []
+for i in my_string:
+    try:
+        answer.append(int(i))
+    except:
+        pass
+answer.sort()
+print(answer)
+
+# 제출용 함수
+def solution(my_string):
+    answer = []
+    for i in my_string:
+        try:
+            answer.append(int(i))
+        except:
+            pass
     answer.sort()
     return answer
