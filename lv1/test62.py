@@ -22,17 +22,33 @@
 # X, Y의 짝꿍은 상당히 큰 정수일 수 있으므로, 문자열로 반환합니다.
 
 X = "100"
-Y = "2345"
+Y = "203045"
 
-y_list = [i for i in Y]
-arr = []
-for i in X:
-    if i in y_list: 
-        arr.append(i)
-        del y_list[y_list.index(i)]
-arr.sort(reverse=True)
-answer = ''.join(arr)
-if answer=='': answer = '-1'
-else: answer = str(int(answer))
+answer = ''
+arr_x = [0]*10
+arr_y = [0]*10
+for i in X: 
+    arr_x[int(i)]+=1
+for i in Y: 
+    arr_y[int(i)]+=1
+for i in range(0,10):
+    answer = str(i)*(min(arr_x[i],arr_y[i])) + answer
+if answer == '': answer = '-1'
+elif answer.replace('0','') == '': answer = '0'
 
-# print(arr,answer)
+print(answer)
+
+# 제출용 함수
+def solution(X, Y):
+    answer = ''
+    arr_x = [0]*10
+    arr_y = [0]*10
+    for i in X: 
+        arr_x[int(i)]+=1
+    for i in Y: 
+        arr_y[int(i)]+=1
+    for i in range(0,10):
+        answer = str(i)*(min(arr_x[i],arr_y[i])) + answer
+    if answer == '': answer = '-1'
+    elif answer.replace('0','') == '': answer = '0'
+    return answer

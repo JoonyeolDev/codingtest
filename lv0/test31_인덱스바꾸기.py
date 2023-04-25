@@ -16,25 +16,19 @@ my_string = "I love you"
 num1 = 3
 num2 = 6
 
-# 인덱스 num1과 num2를 바꾸는 방법
-
 # for문사용
-answer=''
-for i in range(len(my_string)):
-    if i==num1: 
-        i=num2
-    elif i==num2:
-        i=num1
-    answer+=my_string[i]
+answer = ''
+for idx in range(len(my_string)):
+    if idx==num1: idx = num2
+    elif idx==num2: idx = num1
+    answer += my_string[idx]
 print(answer)
 
 # 제출용 함수
 def solution(my_string, num1, num2):
-    answer=''
-    for i in range(len(my_string)):
-        if i==num1: 
-            i=num2
-        elif i==num2:
-            i=num1
-        answer+=my_string[i]
+    answer = ''
+    for idx in range(len(my_string)):
+        if idx==num1: idx = num2
+        elif idx==num2: idx = num1
+        answer += my_string[idx]
     return answer

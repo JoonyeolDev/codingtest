@@ -31,7 +31,7 @@ board = [11, 11]
 
 board_width = board[0]//2
 board_hight = board[1]//2
-# 입력 - 동작값 리스트 만듦
+# 입력 - 동작값 딕셔너리
 keyinput_dic = {"up":[0,1], "down":[0,-1], "left":[-1,0], "right":[1,0]}
 answer = [0,0]
 for i in keyinput:
@@ -41,6 +41,7 @@ for i in keyinput:
     if board_hight >= answer[1]+keyinput_dic[i][1] >= -board_hight :
         answer[1] += keyinput_dic[i][1]
 print(answer)
+
 # 제출용 함수
 def solution(keyinput, board):
     board_width = board[0]//2
