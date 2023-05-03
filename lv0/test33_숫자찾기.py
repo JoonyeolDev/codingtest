@@ -20,6 +20,12 @@ answer = str_num.find(str(k))
 if answer>0:answer+=1
 print(answer)
 
+# 제출용 함수
+def solution(num, k):
+    str_num = str(num)
+    answer = str_num.find(str(k))
+    if answer>0:answer+=1
+    return answer
 
 # find 안쓰고
 def solution2(num, k):

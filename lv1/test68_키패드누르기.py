@@ -56,3 +56,32 @@ for i in numbers:
             if hand=="right":R = str(i)
             else: L = str(i)
     print(i, L, R, answer)
+
+def solution(numbers, hand):
+    dic = {"1":(0,0),"2":(0,1),"3":(0,2),
+            "4":(1,0),"5":(1,1),"6":(1,2),
+            "7":(2,0),"8":(2,1),"9":(2,2),
+            "*":(3,0),"0":(3,1),"#":(3,2),
+            "right":"R","left":"L"}
+    L,R = "*","#"
+    answer = ''
+    for i in numbers:
+        if str(i) in ["1","4","7"]:
+            L = str(i)
+            answer += 'L'
+        elif str(i) in ["3","6","9"]:
+            R = str(i)
+            answer += 'R'
+        else:
+            a = dic[str(i)]
+            if abs(a[0]-dic[L][0])+abs(a[1]-dic[L][1])>abs(a[0]-dic[R][0])+abs(a[1]-dic[R][1]):
+                R = str(i)
+                answer+='R'
+            elif abs(a[0]-dic[L][0])+abs(a[1]-dic[L][1])<abs(a[0]-dic[R][0])+abs(a[1]-dic[R][1]):
+                L = str(i)
+                answer+='L'
+            else:
+                answer+=dic[hand]
+                if hand=="right":R = str(i)
+                else: L = str(i)
+    return answer

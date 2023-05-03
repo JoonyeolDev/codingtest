@@ -32,19 +32,30 @@ a = 3
 b = 2
 n = 20
 
+answer = 0
+while n>=a:
+    answer += (n//a)*b
+    n = (n//a)*b + n%a
+    print (answer)
+
+# 반복문으로 풀기
+def solution(a, b, n):
+    answer = 0
+    while n>=a:
+        answer += (n//a)*b
+        n = (n//a)*b + n%a
+    return answer
+
 # 일반화
 # n병에서 처음 a병을 가져다주면 b병을 받음
-# 재귀함수 ?
+# 재귀함수로 풀기
 def bottle(n, a, b, sum=0):
     if n < a: return sum
     return bottle((n%a)+(n//a)*b, a, b, sum+(n//a)*b)
 
-
-# case 12에서 런타임 뜸
-# 아마 재귀 너무 많이해서 그런듯
 # 조금 더 일반화
 # n - (a - b)*k < a 를 만족하는 k의 최소값을 구하면 됌
-# k는 교환 횟수, k*b가 받는 총 병수가 된다
+# k는 교환 횟수, k*b가 받는 총 병 수가 된다
 # 정리하면
 # k > (n-a)/(a-b) 를 만족하는 k의 최소값
 # k = (n-a)//(a-b) + 1 이 됌
@@ -54,7 +65,8 @@ answer = k*b
 print(answer)
 
 # 제출용 함수
-def solution(a, b, n):
+def solution2(a, b, n):
     k = int((n-a)/(a-b)) + 1
     answer = k*b
     return answer
+
