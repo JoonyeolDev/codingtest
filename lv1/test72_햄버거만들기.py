@@ -23,8 +23,6 @@
 ingredient = [2, 1, 1, 2, 3, 1, 2, 3, 1]
 # result = 2
 
-
-
 arr = []
 answer = 0
 for i in ingredient:
@@ -34,6 +32,16 @@ for i in ingredient:
             del arr[-4:]
             answer+=1
 print(answer)
+
+# def solution(ingredient):
+#     answer = 0
+#     s = ''.join(map(str,ingredient))
+#     while True:
+#         s_idx = s.find('1231')
+#         if s_idx==-1: break
+#         answer+=1
+#         s=s[:s_idx]+s[s_idx+4:]
+#     return answer
 
 def solution(ingredient):
     arr = []
