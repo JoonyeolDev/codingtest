@@ -52,3 +52,17 @@ def solution(X, Y):
     if answer == '': answer = '-1'
     elif answer.replace('0','') == '': answer = '0'
     return answer
+
+
+x_dict = dict()
+y_dict = dict()
+
+for i in range(10):
+    x_dict[str(i)]=[0,0]
+    y_dict[str(i)]=[0,0]
+
+for s in X:
+    arr_x[s][0]+=1
+for s in Y:
+    arr_y[s][1]+=1
+

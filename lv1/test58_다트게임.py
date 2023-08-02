@@ -77,6 +77,7 @@ def score(num, string):
 #         arr.append(dartResult[:2])
 #         arr.append('')
 #         dartResult = dartResult[2:]
+
 dartResult = '1S*2T*3S'
 arr = []
 while len(dartResult) != 0:
@@ -99,7 +100,6 @@ while len(dartResult) != 0:
         dartResult = dartResult[1:]
     else:
         arr.append('+')
-print(arr)
 for idx,value in enumerate(arr[::]):
     if value == '*':
         arr[idx] = '*2+'
@@ -108,15 +108,52 @@ for idx,value in enumerate(arr[::]):
     elif value == '#':
         arr[idx] = '*(-1)+'
 sum_str = ''.join(arr)
-print(sum_str)
 if sum_str[-1] =='+': sum_str=sum_str[:-1]
 answer = eval(sum_str)
 
-print(answer)
 # answer = arr[0]+arr[3]+arr[6]
 # print(arr)
 # print(answer)
 
+dartResult = '1D#2S*3S'
+arr = []
+temp = 0
+dartResult = dartResult.replace('10','a')
+for i,v in enumerate(dartResult[1:]):
+    if v.isnumeric():
+        arr.append(dartResult[temp:i+1])
+        temp=i+1
+    if v=='a':
+        arr.append(dartResult[temp:i+1])
+        temp=i+1
+arr.append(dartResult[temp:])
+print(arr)
+for i in range(3):
+    if '*' in arr[i] :
+        arr[i]=arr[i].replace('*','*2')
+        if i != 0:
+            arr[i-1]+='*2'
+s = '+'.join(arr).replace('S','**1').replace('D','**2').replace('T','**3').replace('#','*(-1)').replace('a','10')
+answer = eval(s)
+print(s)
 
-
-
+def solution(dartResult):
+    arr = []
+    temp = 0
+    dartResult = dartResult.replace('10','a')
+    for i,v in enumerate(dartResult[1:]):
+        if v.isnumeric():
+            arr.append(dartResult[temp:i+1])
+            temp=i
+        if v=='a':
+            arr.append(dartResult[temp:i+1])
+            temp=i
+    arr.append(dartResult[temp:])
+    for i in range(3):
+        if '*' in arr[i] :
+            arr[i]=arr[i].replace('*','*2')
+            if i != 0:
+                arr[i-1]+='*2'
+    s = '+'.join(arr).replace('S','**1').replace('D','**2').replace('T','**3').replace('#','*(-1)').replace('a','10')
+    answer = eval(s)
+    return answer

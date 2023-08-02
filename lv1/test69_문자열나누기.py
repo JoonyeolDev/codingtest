@@ -43,3 +43,16 @@ def solution(s):
         i += 1
     if s: answer+=1
     return answer
+
+count = 0
+answer = 0
+idx = 0
+for i,v in enumerate(s):
+    if v==s[idx]:
+        count+=1
+    else: count-=1
+    if count==0:
+        answer += 1
+        idx = i+1
+if count != 0: answer+=1
+print(answer)
