@@ -17,31 +17,10 @@
 # l ≤ r < l + 10,000,000
 # l과 r은 비트열에서의 인덱스(1-base)이며 폐구간 [l, r]을 나타냅니다.
 
-n,l,r = 2,5,17 
+n,l,r = 2,4,17 
 # result = 8
 
-def cantor(n):
-    s = '1'
-    count = 0
-    while count<n:
-        answer = ''
-        for i in s:
-            if i=='1':
-                answer+='11011'
-            else:
-                answer+='00000'
-        s = answer
-        count+=1
-    return s
-answer = []
-for i in range(4):
-    arr=[]
-    cantor_list = [j for j in cantor(i)]
-    for idx,v in enumerate(cantor_list):
-        if v=='0': arr.append(idx)
-    answer.append(arr)
-print(answer)
-
+# 재귀함수로 풀기
 def sol(i):
     if i%5==2:
         return 0
@@ -55,29 +34,27 @@ def solution(n, l, r):
         answer+= sol(i)
     return answer
 
-0,l-1,r,5**n
-a,b,c = l-2, r-l, 5**n-l
+# 일반화 해서 풀기
+def dec_to_pen(n,sum=''):
+    if n==0: 
+        if sum=='': sum='0'
+        return sum
+    return dec_to_pen(n//5,str(n%5)+sum)
 
-# def cantor_arr(n,l,r,s="1",counter=0):
-#     if counter==n: return s[l-1:r].count("1")
-#     s=s.replace("1","a").replace("0","b")
-#     s=s.replace("a","11011").replace("b","00000")
-#     return cantor_arr(n,l,r,s,counter+1)
+def cantor(i):
+    if i <0: 
+        return 0
+    arr = [1,1,0,1,1]
+    sum_cantor = 0
+    penta = dec_to_pen(i)
+    find_2 = len(penta)-penta.find('2')-1
+    for idx, j in enumerate(penta[::-1]):
+        if idx==0 and find_2==len(penta):
+            sum_cantor += sum(arr[:int(j)+1])
+        elif find_2==len(penta) or idx>=find_2:
+            sum_cantor += sum(arr[:int(j)])*(4**(idx))
+    return sum_cantor
 
-# def solution(n,l,r,s=[1],counter=0):
-#     if counter==n: return s[l-1:r].count(1)
-#     arr = []
-#     for i in s:
-#         if i==1: arr+=[1,1,0,1,1]
-#         else: arr+=[0,0,0,0,0]
-#     s = arr
-#     return solution(n,l,r,s,counter+1)
-
-# answer=0
-# def cantor_arr(l):
-#     if l < 5**(n-1)*2 : answer = 1 + l - ((l-2)//5+1)
-#     elif l>=5**(n-1)*2 and l< 5**(n-1)*3-1 : answer=4**(n-1)*2
-#     else : answer = 4**(n-1)*2 + (l-5**(n-1)*3) - (((l-5**(n-1)*3)-2)//5)
-#     return answer
-
-
+def solution(n, l, r):
+    answer=cantor(r-1)-cantor(l-2)
+    return answer

@@ -57,6 +57,13 @@ for i in range(n):
 print(answer)
 
 # 제출용 함수
+def dec_to_bin(number, n, sum=''):
+    if number==0:
+        if len(sum) < n:
+            sum += '0'*(n-len(sum))
+        return sum[::-1]
+    return dec_to_bin(number//2, n, sum+str(number%2))
+
 def solution(n, arr1, arr2):
     answer = []
     map_list1 = [ dec_to_bin(i, n) for i in arr1]
