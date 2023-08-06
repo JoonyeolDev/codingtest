@@ -23,11 +23,6 @@
 
 grid = ["S", "S"]
 
-
-answer = []
-vector = [[1,0],[0,1],[-1,0],[0,-1]]
-box = [len(grid),len(grid[0])]
-
 def logic(point, vec):
     # point 이동
     point = [point[0]+vec[0], point[1]+vec[1]]
@@ -47,6 +42,9 @@ def logic(point, vec):
     vec = vector[idx]
     return point, vec
 
+answer = []
+vector = [[1,0],[0,1],[-1,0],[0,-1]]
+box = [len(grid),len(grid[0])]
 arr = set()
 for i in range(box[0]):
     for j in range(box[1]):
@@ -65,28 +63,11 @@ for i in range(box[0]):
 answer.sort()
 print(answer)
 
+# 제출용 함수
 def solution(grid):
     answer = []
     vector = [[1,0],[0,1],[-1,0],[0,-1]]
     box = [len(grid),len(grid[0])]
-
-    def logic(point, vec):
-        point = [point[0]+vec[0], point[1]+vec[1]]
-        if point[0] == box[0]:
-            point[0] = 0
-        elif point[0] == -1:
-            point[0] = box[0]-1
-        if point[1] == box[1]:
-            point[1] = 0
-        elif point[1] == -1:
-            point[1] = box[1]-1
-        vec = vector.index(vec)
-        s = {"S": vec,"R": vec-1,"L": vec+1}
-        idx = s[grid[point[0]][point[1]]]
-        if idx == 4: idx=0
-        vec = vector[idx]
-        return point, vec
-
     arr = set()
     for i in range(box[0]):
         for j in range(box[1]):
@@ -97,10 +78,46 @@ def solution(grid):
                 count = 0
                 while tuple(point+v) not in arr:
                     arr.add(tuple(point+v))
-                    point,v = logic(point,v)
+                    point = [point[0]+v[0], point[1]+v[1]]
+                    if point[0] == box[0]:
+                        point[0] = 0
+                    elif point[0] == -1:
+                        point[0] = box[0]-1
+                    if point[1] == box[1]:
+                        point[1] = 0
+                    elif point[1] == -1:
+                        point[1] = box[1]-1
+                    v = vector.index(v)
+                    s = {"S": v,"R": v-1,"L": v+1}
+                    idx = s[grid[point[0]][point[1]]]
+                    if idx == 4: idx=0
+                    v = vector[idx]
                     count+=1
                     if point==start and v==vec:
                         break
+                if count != 0: answer.append(count)
+    answer.sort()
+    return answer
+
+# 제출용 함수 코드개선
+def solution(grid):
+    answer = []
+    vector = [[1,0],[0,1],[-1,0],[0,-1]]
+    v = {"S": 0,"R": -1,"L": 1}
+    box = [len(grid),len(grid[0])]
+    point_path = set()
+    for i in range(box[0]):
+        for j in range(box[1]):
+            for k in range(4):
+                point = [i,j,k]
+                count = 0
+                while tuple(point) not in point_path:
+                    point_path.add(tuple(point))
+                    point[0] = (point[0]+vector[point[2]][0]) % box[0]
+                    point[1] = (point[1]+vector[point[2]][1]) % box[1]
+                    point[2] = (point[2]+v[grid[point[0]][point[1]]]) % 4
+                    count+=1
+                    if point == [i,j,k]: break
                 if count != 0: answer.append(count)
     answer.sort()
     return answer
