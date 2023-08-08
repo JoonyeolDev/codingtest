@@ -12,34 +12,60 @@
 
 bridge_length, weight, truck_weights = 2, 10, [7,4,5,6]
 # result = 8
+from collections import deque
 
-answer=0
-bridge = [0]*bridge_length
-idx = 0
-count=0
-sum_weight = 0
-while len(truck_weights)>count:
-    answer+=1
-    try:
-        if weight >= (sum_weight+truck_weights[idx]-bridge[-1]):
-            bridge.insert(0,truck_weights[idx])
-            sum_weight+=truck_weights[idx]
-            idx+=1
+# 코드 개선, 2489.66 ms > 
+def solution(bridge_length, weight, truck_weights):
+    time = 0
+    bridge = deque()
+    sum_weight = 0
+    trucks = deque(truck_weights)
+
+    while trucks or bridge:
+        if bridge and bridge[0][1] == time:
+            exiting_truck, _ = bridge.popleft()
+            sum_weight -= exiting_truck
+
+        if trucks and sum_weight + trucks[0] <= weight:
+            current_truck = trucks.popleft()
+            bridge.append((current_truck, time + bridge_length))
+            sum_weight += current_truck
         else:
+            if bridge:
+                time = bridge[0][1] - 1
+
+        time += 1
+        answer = time
+    return answer
+
+
+# list, insert, pop 초기 코드
+def solution(bridge_length, weight, truck_weights):
+    answer=0
+    bridge = [0]*bridge_length
+    idx = 0
+    count=0
+    sum_weight = 0
+    while len(truck_weights)>count:
+        answer+=1
+        try:
+            if weight >= (sum_weight+truck_weights[idx]-bridge[-1]):
+                bridge.insert(0,truck_weights[idx])
+                sum_weight+=truck_weights[idx]
+                idx+=1
+            else:
+                bridge.insert(0,0)
+        except:
             bridge.insert(0,0)
-    except:
-        bridge.insert(0,0)
-    if len(bridge)>=bridge_length:
-        a = bridge.pop()
-        if a in truck_weights:
-            count+=1
-            sum_weight-=a
-    
-    print(bridge,idx,sum_weight)
+        if len(bridge)>=bridge_length:
+            a = bridge.pop()
+            if a in truck_weights:
+                count+=1
+                sum_weight-=a
+    return answer
 
 
 # deque, appendleft, pop 쓰는게 시간상 더 이득
-from collections import deque
 def solution(bridge_length, weight, truck_weights):
     answer=0
     bridge = deque([0]*bridge_length)
@@ -63,28 +89,3 @@ def solution(bridge_length, weight, truck_weights):
                 count+=1
                 sum_weight-=a
     return answer
-
-# list, insert, pop
-# def solution(bridge_length, weight, truck_weights):
-#     answer=0
-#     bridge = [0]*bridge_length
-#     idx = 0
-#     count=0
-#     sum_weight = 0
-#     while len(truck_weights)>count:
-#         answer+=1
-#         try:
-#             if weight >= (sum_weight+truck_weights[idx]-bridge[-1]):
-#                 bridge.insert(0,truck_weights[idx])
-#                 sum_weight+=truck_weights[idx]
-#                 idx+=1
-#             else:
-#                 bridge.insert(0,0)
-#         except:
-#             bridge.insert(0,0)
-#         if len(bridge)>=bridge_length:
-#             a = bridge.pop()
-#             if a in truck_weights:
-#                 count+=1
-#                 sum_weight-=a
-#     return answer
