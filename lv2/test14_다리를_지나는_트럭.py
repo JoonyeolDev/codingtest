@@ -12,34 +12,36 @@
 
 bridge_length, weight, truck_weights = 2, 10, [7,4,5,6]
 # result = 8
-from collections import deque
 
-# 코드 개선, 2489.66 ms > 
+
+# 3차 수정, 2489.66 ms > 0.31ms
+# 다리 체크 > 트럭과 조건 체크 > 트럭 들어간 시간 체크
+# 불필요한 while 반복을 줄임
+from collections import deque
 def solution(bridge_length, weight, truck_weights):
-    time = 0
+    answer = 0
     bridge = deque()
     sum_weight = 0
     trucks = deque(truck_weights)
-
     while trucks or bridge:
-        if bridge and bridge[0][1] == time:
+        if bridge and bridge[0][1] == answer:
             exiting_truck, _ = bridge.popleft()
             sum_weight -= exiting_truck
-
         if trucks and sum_weight + trucks[0] <= weight:
             current_truck = trucks.popleft()
-            bridge.append((current_truck, time + bridge_length))
+            bridge.append((current_truck, answer + bridge_length))
             sum_weight += current_truck
         else:
             if bridge:
-                time = bridge[0][1] - 1
-
-        time += 1
-        answer = time
+                answer = bridge[0][1] - 1
+        answer += 1
     return answer
 
+print(solution(bridge_length, weight, truck_weights))
 
-# list, insert, pop 초기 코드
+
+
+# 초기 코드 : list, insert, pop
 def solution(bridge_length, weight, truck_weights):
     answer=0
     bridge = [0]*bridge_length
@@ -63,9 +65,11 @@ def solution(bridge_length, weight, truck_weights):
                 count+=1
                 sum_weight-=a
     return answer
+# 3122.41ms
 
 
-# deque, appendleft, pop 쓰는게 시간상 더 이득
+# 1차 수정 : 자료형 변경 deque, appendleft, pop
+from collections import deque
 def solution(bridge_length, weight, truck_weights):
     answer=0
     bridge = deque([0]*bridge_length)
@@ -89,3 +93,26 @@ def solution(bridge_length, weight, truck_weights):
                 count+=1
                 sum_weight-=a
     return answer
+# 2489.66ms
+
+
+# 2차 수정 : 불필요한 로직 삭제/변경
+from collections import deque
+def solution(bridge_length, weight, truck_weights):
+    answer = 0
+    bridge = deque([0] * bridge_length)
+    sum_weight = 0
+    trucks = deque(truck_weights)
+    
+    while trucks or sum_weight > 0:
+        answer += 1
+        sum_weight -= bridge.pop()
+        
+        if trucks and sum_weight + trucks[0] <= weight:
+            current_truck = trucks.popleft()
+            bridge.appendleft(current_truck)
+            sum_weight += current_truck
+        else:
+            bridge.appendleft(0)
+    return answer
+# 68.56ms
