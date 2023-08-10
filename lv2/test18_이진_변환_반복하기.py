@@ -21,24 +21,41 @@
 s = "110010101001"
 # result = [3,8]
 
+
+# 2차 수정 : 변수 할당
+def solution(s):
+    del_sum = 0
+    count = 0
+    while s != '1':
+        len_s = len(s)
+        one_count = s.count('1')
+        zero_count = len_s - one_count
+        del_sum += zero_count
+        s = bin(one_count).lstrip('0b')
+        count+=1
+    return [count,del_sum]
+# 0.50ms
+
+
+# 1차 수정 : 가독성 개선
+def solution(s):
+    del_sum = 0
+    count = 0
+    while s != '1':
+        one_count = s.count('1')
+        del_sum += len(s) - one_count
+        s = bin(one_count).lstrip('0b')
+        count+=1
+    return [count,del_sum]
+# 0.59ms
+
+
+# 초기 코드
 def dec_to_bin(s,bin=""):
     if s==0: return bin
     return dec_to_bin(s//2,bin=str(s%2)+bin)
-del_sum = 0
-count = 0
-while True:
-    new_s = s.replace("0","")
-    del_sum += len(s)-len(new_s)
-    new_s = dec_to_bin(len(new_s))
-    count+=1
-    if new_s == "1": break
-    s = new_s
-answer = [count,del_sum]
 
 def solution(s):
-    def dec_to_bin(s,bin=""):
-        if s==0: return bin
-        return dec_to_bin(s//2,bin=str(s%2)+bin)
     del_sum = 0
     count = 0
     while True:
@@ -50,3 +67,4 @@ def solution(s):
         s = new_s
     answer = [count,del_sum]
     return answer
+# 2.02ms

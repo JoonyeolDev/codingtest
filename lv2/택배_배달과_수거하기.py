@@ -43,12 +43,10 @@ deliveries = [1, 0, 3, 1, 2]
 pickups = 	[0, 3, 0, 4, 0]
 # result = 16
 
-answer = 0
-if deliveries[-1]>cap:
-    answer += deliveries[-1]//len(deliveries)
-    if deliveries[-1]%len(deliveries) != 0:
-        answer += 1
-        
-elif deliveries[-1]>==cap:
-    answer += len(deliveries)
-else:
+# deliveries의 먼 집부터 탐색 짐 싣고 이동, 이동거리 기록
+# 올 때 pickups에서 먼 집부터 가져오기, 이동거리 기록
+# 반복
+
+
+capacity = 0
+

@@ -19,13 +19,21 @@ A=[1,4,2]
 B=[5,4,4]
 # answer = 29
 
-answer = 0
-A.sort()
-B.sort(reverse=True)
-for i in range(len(A)):
-    answer += A[i]*B[i]
-print(answer)
 
+# 1차 수정 : 변수 할당
+def solution(A,B):
+    answer = 0
+    A.sort()
+    B.sort(reverse=True)
+    len_a = len(A)
+    for i in range(len_a):
+        ab = A[i]*B[i]
+        answer += ab
+    return answer
+# 0.38ms
+
+
+# 초기 코드
 def solution(A,B):
     answer = 0
     A.sort()
@@ -33,3 +41,4 @@ def solution(A,B):
     for i in range(len(A)):
         answer += A[i]*B[i]
     return answer
+# 0.50ms

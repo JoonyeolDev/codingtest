@@ -26,3 +26,4 @@ def solution(s):
         if count<0: return False
     if count==0: return True
     return False
+# 6.74ms
