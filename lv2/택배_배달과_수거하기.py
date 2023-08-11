@@ -47,6 +47,43 @@ pickups = 	[0, 3, 0, 4, 0]
 # 올 때 pickups에서 먼 집부터 가져오기, 이동거리 기록
 # 반복
 
+# 초기 코드
+def solution(cap, n, deliveries, pickups):
+    answer = 0
+    while True:
+        while deliveries and not deliveries[-1]:
+            deliveries.pop()
+        while pickups and not pickups[-1]:
+            pickups.pop()
+        current_load = 0
+        farthest_delivery = 0
+        empty = cap
+        while empty!=0 and deliveries:
+            last = deliveries.pop()
+            if not last: continue
+            farthest_delivery = max(len(deliveries)+1,farthest_delivery)
+            if last > empty:
+                last -= empty
+                deliveries.append(last)
+                empty=0
+                break
+            current_load += last
+            empty = cap - current_load
+        empty = cap
+        farthest_pickup = 0
+        current_load = 0
 
-capacity = 0
-
+        while empty!=0 and pickups:
+            last = pickups.pop()
+            if not last: continue
+            farthest_pickup = max(len(pickups)+1,farthest_pickup)
+            if last > empty:
+                last -= empty
+                pickups.append(last)
+                empty=0
+                break
+            current_load += last
+            empty = cap - current_load
+        answer += max(farthest_delivery,farthest_pickup)*2
+        if not deliveries and not pickups: break
+    return answer
