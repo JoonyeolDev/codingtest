@@ -47,14 +47,44 @@ pickups = 	[0, 3, 0, 4, 0]
 # 올 때 pickups에서 먼 집부터 가져오기, 이동거리 기록
 # 반복
 
-# 초기 코드
+
+# 2차 수정 : 중복 코드 함수 처리
+def delivery_process(arr, cap):
+    while arr and not arr[-1]:
+        arr.pop()
+    farthest = len(arr)
+    while cap and arr:
+        last = arr[-1]
+        if last > cap:
+            last -= cap
+            arr[-1] = last
+            cap = 0
+        else: 
+            cap -= last
+            arr.pop()
+    return farthest
+
 def solution(cap, n, deliveries, pickups):
     answer = 0
+    while deliveries or pickups:
+        farthest_delivery = delivery_process(deliveries, cap)
+        farthest_pickup = delivery_process(pickups, cap)
+        answer += max(farthest_delivery,farthest_pickup)
+    return answer * 2
+# 1815.67ms
+
+
+print(solution(cap, n, deliveries, pickups))
+
+
+# 초기 구현
+def solution(cap, n, deliveries, pickups):
+    answer = 0
+    while deliveries and not deliveries[-1]:
+        deliveries.pop()
+    while pickups and not pickups[-1]:
+        pickups.pop()
     while True:
-        while deliveries and not deliveries[-1]:
-            deliveries.pop()
-        while pickups and not pickups[-1]:
-            pickups.pop()
         current_load = 0
         farthest_delivery = 0
         empty = cap
@@ -87,3 +117,59 @@ def solution(cap, n, deliveries, pickups):
         answer += max(farthest_delivery,farthest_pickup)*2
         if not deliveries and not pickups: break
     return answer
+# 3061.43ms
+
+# 1차 수정 : 필요없는 조건 정리
+def solution(cap, n, deliveries, pickups):
+    answer = 0
+    while deliveries or pickups:
+        while deliveries and not deliveries[-1]:
+            deliveries.pop()
+        while pickups and not pickups[-1]:
+            pickups.pop()
+        
+        farthest_delivery = len(deliveries)
+        empty = cap
+        while empty and deliveries:
+            last = deliveries.pop()
+            if last > empty:
+                last -= empty
+                deliveries.append(last)
+                empty = 0
+            else: empty -= last
+
+        farthest_pickup = len(pickups)
+        empty = cap
+        while empty and pickups:
+            last = pickups.pop()
+            if last > empty:
+                last -= empty
+                pickups.append(last)
+                empty = 0
+            else: empty -= last
+
+        answer += max(farthest_delivery,farthest_pickup) * 2
+    return answer
+# 1839.64ms
+
+
+
+# 팀원이 푼 시간복잡도 n으로 풀기
+def solution(cap, n, dels, pics):
+    answer = 0
+    packet_on_deliver=0
+    box_on_recall=0
+    for i,(p,b) in enumerate(zip(dels[::-1],pics[::-1])):
+        visit1,r1=divmod(p-packet_on_deliver,cap)
+        visit2,r2=divmod(b-box_on_recall,cap)
+        
+        if packet_on_deliver>=p and box_on_recall>=b:
+            packet_on_deliver -=p
+            box_on_recall -= b
+        else:
+            aditional_visit_count=max(visit1+(1 if r1 else 0),visit2+(1 if r2 else 0))
+            packet_on_deliver +=aditional_visit_count*cap - p
+            box_on_recall +=aditional_visit_count*cap - b
+            answer += aditional_visit_count*(n-i)*2
+    return answer
+# 84.84ms
