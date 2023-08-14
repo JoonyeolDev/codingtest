@@ -1,6 +1,6 @@
 # https://school.programmers.co.kr/learn/courses/30/lessons/87377
-
 # 교점에 별 만들기
+
 # 문제 설명
 # Ax + By + C = 0으로 표현할 수 있는 n개의 직선이 주어질 때, 
 # 이 직선의 교점 중 정수 좌표에 별을 그리려 합니다.

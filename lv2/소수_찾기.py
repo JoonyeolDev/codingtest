@@ -55,28 +55,43 @@ for i in arr:
 print(answer)
 
 # 제출용 함수로 만들기
+from itertools import permutations
+def is_prime(num):
+    if num in [0,1]: return False
+    if num == 2: return True
+    if not num % 2: return False
+    for i in range(3,int(num**(0.5))+1):
+        if not num % i: return False
+    return True
 def solution(numbers):
-    answer = 0
-    num_list = []
-    arr = []
-    for i in numbers:
-        num_list.append(i)
-    from itertools import permutations
+    num_list = [i for i in numbers]
+    arr = set()
     for i in range(1,len(num_list)+1):
         a = list(permutations(num_list,i))
         for j in a:
-            number=""
-            for k in j:
-                number += k
-            if int(number)!=0 and int(number)!=1 :
-                arr.append(int(number))
-    arr = set(arr)
-    print(arr)
-    answer=0
-    for i in arr:
-        arr2 = []
-        for j in range(2,int(i**(1/2)+1)):
-            if i%j==0: arr2.append(j)
-            else: pass
-        if len(arr2)==0: answer+=1
-    return answer
+            number=int("".join(j))
+            if is_prime(number):
+                arr.add(number)
+    return len(arr)
+# 14.50ms
+
+# 2차 수정 : permutations, combinations
+from itertools import permutations, combinations
+def is_prime(num):
+    if num == 1: return False
+    if num == 2: return True
+    if not num % 2: return False
+    for i in range(3,int(num**(0.5))+1):
+        if not num % i: return False
+    return True
+def solution(numbers):
+    answer = set()
+    for length in range(1, len(numbers) + 1):
+        for combo in combinations(numbers, length):
+            for perm in permutations(combo):
+                num = int(''.join(perm))
+                if is_prime(num):
+                    answer.add(num)
+    return len(answer)
+
+print(solution(numbers))
