@@ -48,7 +48,6 @@ def solution(keyinput, board):
     board_hight = board[1]//2
     keyinput_dic = {"up":[0,1], "down":[0,-1], "left":[-1,0], "right":[1,0]}
     answer = [0,0]
-
     for i in keyinput:
         if board_width >= answer[0]+keyinput_dic[i][0] >= -board_width :
             answer[0] += keyinput_dic[i][0]
@@ -82,3 +81,4 @@ def solution2(keyinput, board):
         if answer[1]>=board[1]//2:answer[1]=board[1]//2
         elif answer[1]<=board[1]//2*-1:answer[1]=board[1]//2*-1
     return answer
+

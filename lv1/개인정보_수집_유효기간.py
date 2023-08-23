@@ -45,19 +45,20 @@ privacies = ["2021.05.02 A", "2021.07.01 B", "2022.02.19 C", "2022.02.20 C"]
 # 한달 기준이 28일이라 datetime() 같은건 못씀, 1년은 336일
 # 연도 제한이 2000부터니깐 2000빼고 생각
 # 연도*336+ 달*28 + 일 수로 저장하면 계산하기 편할듯
+
 answer = []
 today_cal = (int(today[:4])-2000)*336 + int(today.split('.')[1])*28 + int(today.split('.')[2])
-
+print(today_cal)
 # 약관별 유효기간을 일수로 설정 후 딕셔너리로 저장
 terms_dic = {i.split(' ')[0]: int(i.split(' ')[1])*28 for i in terms}
-
-for idx,value in enumerate(privacies):
+print(terms_dic)
+for idx,value in enumerate(privacies,):
     # 날짜와 약관종류로 나눔
     date, term = value.split(' ')
     # 날짜는 today계산식에 쓴 방식으로 다시 계산
     date_cal = (int(date[:4])-2000)*336 + int(date.split('.')[1])*28 + int(date.split('.')[2])
     # 날짜에 약관종류 유효기간을 더해줌
-    date_cal_term = date_cal + terms_dic[term] -1
+    date_cal_term = date_cal + terms_dic[term] - 1
     # 오늘이랑 비교
     if today_cal > date_cal_term:
         answer+=[idx+1]

@@ -24,25 +24,171 @@
 # arr = [3,1,2,5,4]
 # check_arr = [2, 1, 3, 4, 5]
 
-from sys import stdin
+from sys import stdin, exit
 input = stdin.readline
 
-# n = int(input())-1
-# arr_str = input()
-# check_arr_str = input()
 
-n = int(input()) -1
+n = 5
+arr = [3,1,2,5,4]
+# arr = [3,1,2,5,4,6]
+# check_arr = [1,3,2,4,5]
+check_arr = [2,1,3,4,5]
+# check_arr = [4,1,2,3,5,6]
+# check_arr = [1,2,3,4,5]
+
+n = int(input())
 arr = list(map(int,input().split()))
 check_arr = list(map(int,input().split()))
 
-for i in range(n, 0, -1):
-    max_idx = i
-    for j in range(0, i):
-        if arr[j] > arr[max_idx]:
-            max_idx = j
-    if max_idx != i:
-        arr[i],arr[max_idx] = arr[max_idx], arr[i]
+
+# 압축
+def solution(n,arr,check_arr):
     if arr == check_arr: 
-        print(1)
+        return 1
+    sorted_arr = sorted(arr)
+    sorted_check_arr = sorted(check_arr)
+    if sorted_arr != sorted_check_arr:
+        return 0
+    rank = {value: idx for idx, value in enumerate(sorted_arr)}
+    comp_arr = [rank[value] for value in arr]
+    comp_check_arr = [rank[value] for value in check_arr]
+    for idx in range(n-1,1,-1):
+        max_idx = idx
+        for i in range(0,idx):
+            if comp_arr[i] > comp_arr[max_idx]:
+                max_idx = i
+        if max_idx != idx:
+            comp_arr[idx], comp_arr[max_idx] = comp_arr[max_idx], comp_arr[idx]
+        if comp_arr[idx] != comp_check_arr[idx]:
+            break
+    if comp_arr == comp_check_arr:
+        return 1
+    return 0
+
+
+
+if arr == check_arr: 
+    print(1)
+    exit()
+sorted_arr = sorted(arr)
+rank = {value: idx for idx, value in enumerate(sorted_arr)}
+comp_arr = [rank[value] for value in arr]
+comp_check_arr = [rank[value] for value in check_arr]
+for idx in range(n-1,1,-1):
+    max_idx = idx
+    for i in range(0,idx):
+        if comp_arr[i] > comp_arr[max_idx]:
+            max_idx = i
+    if max_idx != idx:
+        comp_arr[idx], comp_arr[max_idx] = comp_arr[max_idx], comp_arr[idx]
+    if comp_arr[idx] != comp_check_arr[idx]:
         break
-else: print(0)
+print(1 if comp_arr == comp_check_arr else 0)
+
+
+
+
+
+
+# print(solution(n,arr,check_arr))
+
+
+# print(solution(n,arr,check_arr))
+
+# def solution(n,arr,check_arr):
+#     if arr == check_arr: 
+#         return 1
+#     for idx in range(n-1,0,-1):
+        # max_idx = idx
+        # for i in range(0,idx):
+        #     if arr[i] > arr[max_idx]:
+        #         max_idx = i
+#         if max_idx != idx:
+#             arr[idx], arr[max_idx] = arr[max_idx], arr[idx]
+#             if arr == check_arr:
+#                 return 1
+#     return 0
+
+# def solution(n,arr,check_arr):
+#     if arr==check_arr:
+#         return 1
+#     sorted_arr = sorted(arr)
+#     for idx in range(n-1,0,-1):
+#         if sorted_arr[idx] != check_arr[idx]:
+#             last_idx = idx
+#             break
+#     else: return 1
+#     for idx in range(n-1,last_idx,-1):
+#         max_idx = idx
+#         for i in range(0,idx):
+#             if arr[i] > arr[max_idx]:
+#                 max_idx = i
+#         if arr[idx] < arr[max_idx]:
+#             arr[idx], arr[max_idx] = arr[max_idx], arr[idx]
+            
+#     return 1 if arr == check_arr else 0
+#     # return arr
+
+
+
+# def solution(n, arr, check_arr):
+#     if arr == check_arr:
+#         return 1
+#     for idx in range(n-1, 0, -1):
+#         max_idx = idx
+#         for i in range(idx):
+#             if arr[i] > arr[max_idx]:
+#                 max_idx = i
+#         if arr[max_idx] != check_arr[idx]: break
+#         arr[idx], arr[max_idx] = arr[max_idx], arr[idx]
+#     return 1 if arr == check_arr else 0
+    # return arr
+
+# print(solution(n,arr,check_arr))
+
+# def solution(n, arr, check_arr):
+#     if arr == check_arr:
+#         return 1
+#     sorted_arr = sorted(arr)
+#     for idx in range(n-1, -1, -1):
+#         if sorted_arr[idx] != check_arr[idx]:
+#             last_idx = idx
+#             break
+#     else:
+#         return 1
+#     for idx in range(n-1, last_idx, -1):
+#         max_idx = idx
+#         for i in range(idx):
+#             if arr[i] > arr[max_idx]:
+#                 max_idx = i
+#         if arr[max_idx] != check_arr[idx]: 
+#             break
+#         arr[idx], arr[max_idx] = arr[max_idx], arr[idx]
+#     return 1 if arr == check_arr else 0
+    # return arr
+
+
+# if arr == check_arr:
+#     print(1)
+#     exit()
+# sorted_arr = sorted(arr)
+# for idx in range(n-1, -1, -1):
+#     if sorted_arr[idx] != check_arr[idx]:
+#         last_idx = idx
+#         break
+# else:
+#     print(1)
+#     exit()
+# for idx in range(n-1, last_idx, -1):
+#     max_idx = idx
+#     for i in range(idx):
+#         if arr[i] > arr[max_idx]:
+#             max_idx = i
+#     if arr[max_idx] != check_arr[idx]: 
+#         break
+#     arr[idx], arr[max_idx] = arr[max_idx], arr[idx]
+
+# print(1 if arr == check_arr else 0)
+
+
+# print(solution(n,arr,check_arr))

@@ -25,8 +25,37 @@
 # 다중집합 원소 사이를 비교할 때, 대문자와 소문자의 차이는 무시한다. "AB"와 "Ab", "ab"는 같은 원소로 취급한다.
 
 # str1, str2 = "aa1+aa2", "AAAA12"
-# str1, str2 = "handshake", "shake hands"
-str1, str2 = "E=M*C^2", "e=m*c^2"
+str1, str2 = "handshake", "shake hands"
+# str1, str2 = "E=M*C^2", "e=m*c^2"
+
+def create_dict(string):
+    len_string = len(string)
+    dict_str = {}
+    for i in range(len_string-1):
+        s = string[i:i+2]
+        if s.isalpha():
+            dict_str[s] = dict_str.get(s, 0) + 1
+    return dict_str
+
+def solution(str1, str2):
+    str1, str2 = str1.lower(), str2.lower()
+    dict_1 = create_dict(str1)
+    dict_2 = create_dict(str2)
+    if not dict_1 and not dict_2:
+        return 65536
+    str_list = set(dict_1.keys()) | set(dict_2.keys())
+    intersection = 0
+    union = 0
+    for str_ in str_list:
+        cnt_1, cnt_2 = dict_1.get(str_, 0), dict_2.get(str_, 0)
+        intersection += min(cnt_1, cnt_2)
+        union += max(cnt_1, cnt_2)
+    return int(intersection/union * 65536)
+# 0.61ms, 10.2MB
+
+print(solution(str1, str2))
+
+# 초기 코드
 def solution(str1, str2):
     str1, str2 = str1.lower(), str2.lower()
     if str1==str2: return 65536
@@ -51,5 +80,5 @@ def solution(str1, str2):
         intersection += min(cnt_1, cnt_2)
         union += max(cnt_1, cnt_2)
     return int(intersection/union * 65536)
+# 0.61ms, 10.4MB
 
-print(solution(str1, str2))
