@@ -33,7 +33,7 @@ files = ["F-5 Freedom Fighter", "B-50 Superfortress", "A-10 Thunderbolt II", "F-
 # result = ["img1.png", "IMG01.GIF", "img02.png", "img2.JPG", "img10.png", "img12.png"]
 
 
-# 2차 수정 : 정규표현식 없이 풀기
+# 2차 수정 : 정규 표현식 사용하지 않고 풀기
 def solution(files):
     answer = []
     for idx, file in enumerate(files):
@@ -53,7 +53,7 @@ def solution(files):
 # 3.45ms, 10.5MB
 
 
-# 1차 수정 : 로직 변경, 
+# 1차 수정 : 로직 변경
 import re
 def solution(files):
     answer = []
@@ -63,7 +63,7 @@ def solution(files):
         head, numbers = match.groups()
         f = (head.lower(), int(numbers), idx)
         answer.append(f)
-    answer = [files[i] for _, _, i in sorted(answer)]
+    answer = [files[idx] for _, _, idx in sorted(answer)]
     return answer
 # 2.80ms, 10.6MB
 

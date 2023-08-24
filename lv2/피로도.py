@@ -1,4 +1,5 @@
 # https://school.programmers.co.kr/learn/courses/30/lessons/87946
+# 피로도
 
 # 문제 설명
 # XX게임에는 피로도 시스템(0 이상의 정수로 표현합니다)이 있으며, 일정 피로도를 사용해서 던전을 탐험할 수 있습니다. 
@@ -19,8 +20,26 @@
 # "최소 필요 피로도"와 "소모 피로도"는 1 이상 1,000 이하인 자연수입니다.
 # 서로 다른 던전의 ["최소 필요 피로도", "소모 피로도"]가 서로 같을 수 있습니다.
 
+# 완전 탐색문제니깐 itertools의 permutations 써보기
+# 재귀함수로도 풀어보기
+
 k = 80
 dungeons = [[80,20],[50,40],[30,10],[20,10]]
+
+
+# 1차 수정 : permutataions 안 쓰고 풀기
+def solution(k, dungeons, visited=None):
+    if visited==None:
+        visited = [False] * len(dungeons)
+    max_count = 0
+    for idx, (min_required, consumption) in enumerate(dungeons):
+        if not visited[idx] and k >= min_required:
+            visited[idx] = True
+            max_count = max(max_count, 1 + solution(k - consumption, dungeons, visited))
+            visited[idx] = False
+    return max_count
+# 49.21ms, 10.3MB
+
 
 # 초기 코드 
 from itertools import permutations

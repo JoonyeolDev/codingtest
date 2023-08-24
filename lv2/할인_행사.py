@@ -84,8 +84,8 @@ def check_discount(want, number, lst):
     return 1
 def solution(want, number, discount):
     answer = 0
-    len_dis = len(discount)
     idx = 0
+    len_dis = len(discount)
     while idx<=len_dis-10:
         if check_discount(want, number, discount[idx:idx+10]):
             cnt = 1
