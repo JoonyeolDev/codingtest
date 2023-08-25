@@ -26,6 +26,33 @@ k = 10
 # split('0')으로 나누고 각 수를 소수를 찾는 함수로 확인
 
 
+# 1차 수정 : 로직 수정
+def convert_dec_to_k(k, num):
+    result = ""
+    while num > 0:
+        result = str(num % k) + result
+        num //= k
+    return result or '0'
+
+def is_prime(num):
+    if num == 1: return 0
+    elif num == 2: return 1
+    sqrt_ = int(num**(0.5))
+    if sqrt_**2 == num: return 0
+    for i in range(3, sqrt_+1, 2):
+        if not num%i: return 0
+    return 1
+
+def solution(n, k):
+    answer = 0
+    number = convert_dec_to_k(k, n)
+    for num in number.split('0'):
+        if num:
+            answer += is_prime(int(num))
+    return answer
+# 45.16ms, 10.4MB
+
+
 # 초기 코드
 def convert_dec_to_k(k, num, sum=''):
     if num == 0: return sum
@@ -48,4 +75,5 @@ def solution(n, k):
         answer += is_prime(num)
     return answer
 # 106.69ms, 10.5MB
+
 print(solution(n, k))
