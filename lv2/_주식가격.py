@@ -15,6 +15,7 @@ prices = [1, 2, 3, 2, 3]
 # 작거나 같다면 현재 시간 - 들어간 시간을 answer 인덱스에 맞게 변경
 
 
+# 1차 수정 : 가독성 개선
 def solution(prices):
     queue = []
     len_prices = len(prices)
