@@ -17,11 +17,24 @@
 
 # 출력
 # 각 테스트 케이스에 대해 문서가 몇 번째로 인쇄되는지 출력한다.
-
+from collections import deque
 from sys import stdin
 input = stdin.readline
 
-# for _ in range(int(input.rstrip('\n'))):
-#     n, m = map(int, input().split())
-#     arr = [int(num) for num in input().split()]
+for _ in range(int(input().rstrip('\n'))):
+    n, m = map(int, input().split())
+    arr = deque([(int(num), idx) for idx, num in enumerate(input().split())])
+    cnt = 1
+    while arr:
+        max_num = max(arr, key=lambda x: x[0])
+        if arr[0][0] == max_num[0]:
+            num, idx = arr.popleft()
+            if idx == m:
+                print(cnt)
+                break
+            cnt += 1
+        else:
+            arr.append(arr.popleft())
+
+# 34104KB, 88ms, 526B
 
