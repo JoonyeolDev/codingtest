@@ -20,7 +20,7 @@ for number in arr:
     if number == 2: 
         cnt += 1
         continue
-    elif number == 1 or not num % 2: continue
+    elif number == 1 or not number % 2: continue
     sqrt_num = int(number**0.5)
     for num in range(3, sqrt_num+1, 2):
         if not number % num : break
