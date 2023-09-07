@@ -13,3 +13,77 @@
 # 출력
 # 여러분은 토마토가 모두 익을 때까지의 최소 날짜를 출력해야 한다. 만약, 저장될 때부터 모든 토마토가 익어있는 상태이면 0을 출력해야 하고, 토마토가 모두 익지는 못하는 상황이면 -1을 출력해야 한다.
 
+
+# 1차 수정 : 변수명 변경 및 로직 변경
+from collections import deque
+from sys import stdin
+
+input = stdin.readline
+
+m, n = map(int, input().split())
+tomatoes = deque()
+arr = []
+unripe_tomatoes = 0
+
+for y in range(n):
+    row = list(map(int, input().split()))
+    arr.append(row)
+    for x, value in enumerate(row):
+        if value == 1:
+            tomatoes.append((x, y, 0))
+        elif value == 0:
+            unripe_tomatoes += 1
+
+directions = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+day_cnt = 0
+while tomatoes:
+    x, y, day_cnt = tomatoes.popleft()
+    for dx, dy in directions:
+        nx, ny = x + dx, y + dy
+        if 0 <= nx < m and 0 <= ny < n and arr[ny][nx] == 0:
+            arr[ny][nx] = 1
+            tomatoes.append((nx, ny, day_cnt + 1))
+            unripe_tomatoes -= 1
+
+print(day_cnt if unripe_tomatoes == 0 else -1)
+# 98664KB, 2080ms, 789B
+
+
+# 초기 코드
+from collections import deque
+from sys import stdin
+input = stdin.readline
+
+m, n = map(int, input().split())
+tomatoes = deque()
+arr = []
+unripe_tomatoes = 0
+day_cnt = 0
+for y in range(n):
+    temp_arr = list(map(int, input().split()))
+    arr.append(temp_arr)
+    for x, box in enumerate(temp_arr):
+        if box == 1:
+            tomatoes.append((x, y))
+        elif box == 0:
+            unripe_tomatoes += 1
+
+dir = [(1,0),(-1,0),(0,1),(0,-1)]
+temp_tomatoes = deque()
+while tomatoes:
+    x, y = tomatoes.popleft()
+    for dx, dy in dir:
+        nx, ny = x+dx, y+dy
+        if 0 <= nx < m and 0 <= ny < n and arr[ny][nx] == 0:
+            arr[ny][nx] = 1
+            temp_tomatoes.append((nx, ny))
+            unripe_tomatoes -= 1
+    if not tomatoes and temp_tomatoes:
+        tomatoes.extend(temp_tomatoes)
+        temp_tomatoes.clear()
+        day_cnt += 1
+
+print(day_cnt if not unripe_tomatoes else -1)
+
+# 102840KB, 1932ms, 905B
+
