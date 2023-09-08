@@ -1,4 +1,4 @@
-# https://www.acmicpc.net/problem/2470
+# https://www.acmicpc.net/problem/2467
 # 용액
 
 # 문제
