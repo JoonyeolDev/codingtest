@@ -47,4 +47,15 @@ for i in range(row):
             stoppers.add((i, j))
 
 print(stoppers)
+directions = [(1,0),(-1,0),(0,1),(0,-1)]
+for stopper in stoppers:
+    y, x = stopper
+    for dy, dx in directions:
+        ny, nx = y+dy, x+dx
+        stop = (ny, nx)
+        while 0 <= ny < row and 0 <= nx < col and (ny, nx) not in stoppers:
+            graph[(ny, nx)].append(stop)
+            ny += dy
+            nx += dx
+print(graph)
 
