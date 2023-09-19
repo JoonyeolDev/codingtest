@@ -24,38 +24,73 @@
 # 문자열은 ".", "D", "R", "G"로만 구성되어 있으며 각각 빈 공간, 장애물, 로봇의 처음 위치, 목표 지점을 나타냅니다.
 # "R"과 "G"는 한 번씩 등장합니다.
 
-from collections import defaultdict
 
 board = ["...D..R", ".D.G...", "....D.D", "D....D.", "..D...."]
 # result = 7
 
+# 1차 수정 : 로직 수정
+from collections import deque
 def solution(board):
-    answer = 0
-    return answer
+    col, row = len(board[0]), len(board)
+    directions = [(1,0),(-1,0),(0,1),(0,-1)]
+    visited = set()
+    for i in range(row):
+        for j in range(col):
+            if board[i][j] == 'R':
+                queue = deque([(i, j, 0)])
+                break
+    while queue:
+        current_node = queue.popleft()
+        y, x, cnt = current_node
+        for dy, dx in directions:
+            ny, nx = y+dy, x+dx
+            while 0 <= ny < row and 0 <= nx < col and board[ny][nx] != 'D':
+                ny += dy
+                nx += dx
+            (ny, nx) = ny-dy, nx-dx
+            if board[ny][nx] == 'G':
+                return cnt+1
+            if (ny, nx) not in visited:
+                visited.add((ny, nx))
+                queue.append((ny, nx, cnt+1))
+    return -1
+# 11.08ms, 10.3MB
 
-col = len(board[0])
-row = len(board)
-graph = defaultdict(list)
-stoppers = set()
-for i in range(row):
-    for j in range(col):
-        if board[i][j] == 'R':
-            start = (i, j)
-        elif board[i][j] == 'G':
-            goal = (i, j)
-        elif board[i][j] == 'D':
-            stoppers.add((i, j))
 
-print(stoppers)
-directions = [(1,0),(-1,0),(0,1),(0,-1)]
-for stopper in stoppers:
-    y, x = stopper
-    for dy, dx in directions:
-        ny, nx = y+dy, x+dx
-        stop = (ny, nx)
-        while 0 <= ny < row and 0 <= nx < col and (ny, nx) not in stoppers:
-            graph[(ny, nx)].append(stop)
-            ny += dy
-            nx += dx
-print(graph)
+# 초기 코드
+from collections import deque
+def solution(board):
+    col = len(board[0])
+    row = len(board)
+    stoppers = set()
+    for i in range(row):
+        for j in range(col):
+            if board[i][j] == 'R':
+                queue = deque([(i, j, 0)])
+            elif board[i][j] == 'G':
+                goal = (i, j)
+            elif board[i][j] == 'D':
+                stoppers.add((i, j))
+    directions = [(1,0),(-1,0),(0,1),(0,-1)]
+    visited = set()
+    while queue:
+        current_node = queue.popleft()
+        y, x, cnt = current_node
+        if (y, x) in visited:
+            continue
+        else:
+            visited.add((y, x))
 
+        for dy, dx in directions:
+            ny, nx = y+dy, x+dx
+            while 0 <= ny < row and 0 <= nx < col and (ny, nx) not in stoppers:
+                ny += dy
+                nx += dx
+            vertex = (ny-dy, nx-dx)
+            stop = (ny-dy, nx-dx, cnt+1)
+            if vertex == goal:
+                return cnt+1
+            if vertex not in visited:
+                queue.append(stop)
+    return -1
+# 15.71ms, 10.4MB
