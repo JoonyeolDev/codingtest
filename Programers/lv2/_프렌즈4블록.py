@@ -19,7 +19,7 @@ board = ["CCBDE", "AAADE", "AAABF", "CCBBF"]
 # answer = 14
 
 
-# 1차 수정 : 모듈화
+# 1차 수정 : 로직 변경 및 모듈화
 def find_blocks_to_remove(board, m, n):
     to_remove = set()
     for y in range(m - 1):
