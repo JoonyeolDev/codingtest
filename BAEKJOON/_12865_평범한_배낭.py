@@ -18,12 +18,10 @@ input = stdin.readline
 
 n, k = map(int, input().split())
 
-items = [0] * (k + 1)
+dp = [0] * (k + 1)
 
 for _ in range(n):
     w, v = map(int, input().split())
-    items.append((w,v))
 
-items.sort(key= lambda x: x[1]/x[0], reverse=True)
 
-print(items)
+
