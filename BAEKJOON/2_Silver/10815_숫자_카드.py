@@ -13,5 +13,19 @@
 # 첫째 줄에 입력으로 주어진 M개의 수에 대해서, 각 수가 적힌 숫자 카드를 상근이가 가지고 있으면 1을, 아니면 0을 공백으로 구분해 출력한다.
 
 from sys import stdin
+
 input = stdin.readline
 
+n = int(input())
+set_num = set(map(int, input().split()))
+m = int(input())
+num_arr = list(map(int, input().split()))
+
+for i in range(m):
+    if num_arr[i] in set_num:
+        num_arr[i] = "1"
+    else:
+        num_arr[i] = "0"
+
+print(" ".join(num_arr))
+# 125656KB, 460ms, 298B
