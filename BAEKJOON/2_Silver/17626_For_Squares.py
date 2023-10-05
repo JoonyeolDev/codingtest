@@ -14,32 +14,27 @@
 from sys import stdin
 input = stdin.readline
 
-def isPerfectSquare(x):
+def is_perfect_square(x):
     y = int(x ** 0.5)
-    return y * y == x
-
-def checkAnswer4(x):
-    while x % 4 == 0:
-        x //= 4
-    return x % 8 == 7
+    return y ** 2 == x
 
 def solution(n):
-    if isPerfectSquare(n):
+    if is_perfect_square(n):
         return 1
 
     for i in range(1, int(n ** 0.5) + 1):
-        if isPerfectSquare(n - i * i):
+        if is_perfect_square(n - i * i):
             return 2
 
-    if checkAnswer4(n):
-        return 4
-
     for i in range(1, int(n ** 0.5) + 1):
-        if checkAnswer4(n - i * i):
-            return 3
+        for j in range(1, int((n - i ** 2) ** 0.5) + 1):
+            if is_perfect_square(n - i ** 2 - j ** 2):
+                return 3
 
     return 4
 
 n = int(input())
 print(solution(n))
+
+# 31256KB, 56ms, 517B
 
