@@ -14,39 +14,63 @@
 # 출력
 # 첫 번째 줄에 N명의 학생들 중 오고 가는데 가장 오래 걸리는 학생의 소요시간을 출력한다.
 
+# n, m, x = 4, 8, 2
+# graph = {
+#     1: [(2, 4), (3, 2), (4, 7)],
+#     2: [(1, 1), (3, 5)],
+#     3: [(1, 2), (4, 4)],
+#     4: [(2, 3)],
+# }
+# reversed_graph = {
+#     2: [(1, 4), (4, 3)],
+#     3: [(1, 2), (2, 5)],
+#     4: [(1, 7), (3, 4)],
+#     1: [(2, 1), (3, 2)],
+# }
+
+import heapq
 from collections import defaultdict
 from sys import stdin
+
+def dijkstra(x, graph):
+    result = {}
+    fringe = []
+    marked = set()
+
+    startnode = x
+    heapq.heappush(fringe, (0, startnode))
+
+    while fringe:
+        distance, current_vertex = heapq.heappop(fringe)
+
+        if current_vertex in  marked:
+            continue
+
+        marked.add(current_vertex)
+        result[current_vertex] = distance
+        successors = graph[current_vertex]
+
+        for vertex, weight in successors:
+            heapq.heappush(fringe, (distance + weight, vertex))
+    return result
+
 input = stdin.readline
 
-# n, m, x = map(int, input().split())
+n, m, x = map(int, input().split())
 
-# graph = defaultdict(list)
-# for _ in range(m):
-#     s, e, t = map(int, input().split())
-#     graph[s].append((e, t))
+graph = defaultdict(list)
+reversed_graph = defaultdict(list)
+for _ in range(m):
+    s, e, t = map(int, input().split())
+    graph[s].append((e, t))
+    reversed_graph[e].append((s, t))
 
-n, m, x = 4, 8, 2
-graph = {1: [(2, 4), (3, 2), (4, 7)], 
-         2: [(1, 1), (3, 5)], 
-         3: [(1, 2), (4, 4)], 
-         4: [(2, 3)]}
+to_party = dijkstra(x, graph)
+to_home = dijkstra(x, reversed_graph)
+max_time = 0
+for i in range(1, n + 1):
+    max_time = max(max_time, to_home[i] + to_party[i])
 
-path_length = {i:float('inf') for i in graph}
-vertexs = [i for i in graph]
+print(max_time)
+# 36256KB, 88ms, 1017B
 
-path_length[2] = 0
-while vertexs:
-    u = -1
-    shortest_path_u = float('inf')
-    for k in vertexs:
-        if path_length[k] < shortest_path_u:
-            u = k
-            shortest_path_u = path_length[k]
-    vertexs.remove(u)
-
-    for v, weight in graph[u]:
-        new_dist = path_length[u] + weight
-        if path_length[v] > new_dist:
-            path_length[v] = new_dist
-
-print(max(path_length.values()))

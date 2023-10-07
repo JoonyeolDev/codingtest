@@ -10,12 +10,33 @@
 # 출력
 # 총 N개의 줄에 걸쳐서 문제의 정답을 인접행렬 형식으로 출력한다. 정점 i에서 j로 가는 길이가 양수인 경로가 있으면 i번째 줄의 j번째 숫자를 1로, 없으면 0으로 출력해야 한다.
 
+# n = 3
+# graph = {0: [1], 1: [2], 2: [0]}
+
+from collections import deque
 from sys import stdin
 
 input = stdin.readline
 
-# graph = {}
-# for i in range(int(input())):
-#     row = list(map(int, input().split()))
-#     graph[i] = [num for num, exist in enumerate(row) if exist]
-graph = {0: [1], 1: [2], 2: [0]}
+n = int(input())
+graph = {}
+connnection = []
+
+for i in range(n):
+    row = list(map(int, input().split()))
+    graph[i] = [num for num, exist in enumerate(row) if exist]
+
+for key in graph:
+    queue = deque([key])
+    visited = [0 for _ in range(n)]
+    while queue:
+        current = queue.popleft()
+        for vertex in graph[current]:
+            if not visited[vertex]:
+                visited[vertex] = 1
+                queue.append(vertex)
+    connnection.append(visited)
+
+for i in connnection:
+    print(" ".join(list(map(str, i))))
+# 34140KB, 76ms, 618B
