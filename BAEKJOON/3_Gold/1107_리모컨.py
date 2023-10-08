@@ -13,40 +13,30 @@
 # 출력
 # 첫째 줄에 채널 N으로 이동하기 위해 버튼을 최소 몇 번 눌러야 하는지를 출력한다.
 
-from itertools import product
+# 100에서 +- vs 직접 버튼 누르고 +-
+# 고장난 버튼 없으면 입력 x
+# 그리디x 브루트포스o
+
+from collections import deque
 from sys import stdin
 input = stdin.readline
 
 n = int(input())
 m = int(input())
+normal_bnt = set(num for num in range(10)) - (set(map(int, input().split())) if m else set())
 
+min_cnt = abs(100 - n)
+queue = deque([''])
 
-# 초기 코드 : 틀림
-def remote_controller(n, m):
-    len_n = len(str(n))
-    if not m:
-        return min(abs(n-100),len_n)
-    broken_buttons = list(map(int, input().split()))
-    if n == 100:
-        return 0
-    elif m == 10:
-        return abs(n-100)
-    buttons = [str(num) for num in range(10) if num not in broken_buttons]
-    min_gap = abs(n-100)
-    for pro in product(buttons, repeat=len_n):
-        num = int(''.join(pro))
-        min_gap = min(abs(n-num)+len_n, min_gap)
-    if not (m == 9 and buttons[0]=='0'):
-        if buttons[0] == '0':
-            max_num = buttons[1]+'0'*(len_n)
-        else:
-            max_num = buttons[0]*(len_n+1)
-            print(buttons[0])
-        max_num_gap = abs(n-int(max_num))+len_n+1
-        min_num_gap = abs(n-int(buttons[-1]*(len_n-1)))+len_n-1
-        min_gap = min(min_num_gap, min_gap, max_num_gap)
-    else:
-        min_gap = min(n+1, abs(n-100))
-    return min_gap
+if m < 10:
+    while queue:
+        num = queue.popleft()
+        for btn in normal_bnt:
+            temp_num = num + str(btn)
+            min_cnt = min(min_cnt, abs(n - int(temp_num)) + len(temp_num))
 
-print(remote_controller(n, m))
+            if temp_num != '0' and len(temp_num) < 6:
+                queue.append(temp_num)
+
+print(min_cnt)
+# 37636KB, 992ms, 560B
