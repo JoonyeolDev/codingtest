@@ -28,17 +28,19 @@
 board = ["...D..R", ".D.G...", "....D.D", "D....D.", "..D...."]
 # result = 7
 
-# 1차 수정 : 로직 수정
+# 1차 개선
 from collections import deque
-def solution(board):
-    col, row = len(board[0]), len(board)
-    directions = [(1,0),(-1,0),(0,1),(0,-1)]
-    visited = set()
+def find_start(col, row, board):
     for i in range(row):
         for j in range(col):
             if board[i][j] == 'R':
-                queue = deque([(i, j, 0)])
-                break
+                return deque([(i, j, 0)])
+
+def solution(board):
+    col, row = len(board[0]), len(board)
+    directions = [(1,0),(-1,0),(0,1),(0,-1)]
+    visited = [[0 for _ in range(col)] for _ in range(row)]
+    queue = find_start(col, row, board)
     while queue:
         current_node = queue.popleft()
         y, x, cnt = current_node
@@ -47,14 +49,14 @@ def solution(board):
             while 0 <= ny < row and 0 <= nx < col and board[ny][nx] != 'D':
                 ny += dy
                 nx += dx
-            (ny, nx) = ny-dy, nx-dx
+            ny, nx = ny-dy, nx-dx
             if board[ny][nx] == 'G':
                 return cnt+1
-            if (ny, nx) not in visited:
-                visited.add((ny, nx))
+            if not visited[ny][nx]:
+                visited[ny][nx] = 1
                 queue.append((ny, nx, cnt+1))
     return -1
-# 11.08ms, 10.3MB
+# 7.12ms, 10.3MB
 
 
 # 초기 코드
@@ -76,9 +78,7 @@ def solution(board):
     while queue:
         current_node = queue.popleft()
         y, x, cnt = current_node
-        if (y, x) in visited:
-            continue
-        else:
+        if (y, x) not in visited:
             visited.add((y, x))
 
         for dy, dx in directions:

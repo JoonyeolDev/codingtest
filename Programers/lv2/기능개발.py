@@ -22,7 +22,7 @@ speeds = [1, 1, 1, 1, 1, 1]
 
 # 1차 수정 : 로직 변경
 from collections import deque
-def optimized_solution(progresses, speeds):
+def solution(progresses, speeds):
     days_required = deque([(100 - p + s - 1) // s for p, s in zip(progresses, speeds)])
     answer = []
     while days_required:

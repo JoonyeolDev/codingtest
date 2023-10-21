@@ -39,5 +39,6 @@ def solution(maps):
                 visited[nx][ny] = True
                 queue.append((nx, ny, cnt + 1))
     return -1
+# 9.55ms, 10.3MB
 
 solution(maps)

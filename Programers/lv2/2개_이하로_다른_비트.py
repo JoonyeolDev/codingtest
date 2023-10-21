@@ -31,7 +31,9 @@ numbers = [2, 7]
 def solution(numbers):
     return [num + ((num ^ (num+1)) >> 2) + 1 for num in numbers]
 # 29.95ms, 25.3MB
-
+numbers = [i for i in range(1,16)]
+for i, j in zip(numbers, solution(numbers)):
+    print(f'{i}: {bin(i).lstrip("0b")} > {bin(j).lstrip("0b")}')
 
 # 인상깊은 풀이 : 원리 파악
 def solution(numbers):
@@ -58,7 +60,6 @@ def solution(numbers):
             key = (number % 16) // 4
             if key == 3:
                 bin_number = bin(number).lstrip('0b')
-                len_number = len(bin_number)
                 
                 n = 2
                 while True:
@@ -66,7 +67,7 @@ def solution(numbers):
                     temp_num =number + 2**n
                     bin_temp_num = bin(temp_num).lstrip('0b')
                     len_temp_num = len(bin_temp_num)
-                    temp = '0'*(len_temp_num-len_number) + bin_number
+                    temp = bin_number.rjust(len_temp_num, '0')
                     different = 0
                     for i in range(len_temp_num):
                         if temp[i] != bin_temp_num[i]:
