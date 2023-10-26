@@ -18,42 +18,22 @@ x, y, n = 5, 21, 2
 # result = 2
 
 
-# 1차 수정 : 자료구조 변경 및 로직 수정
-from collections import deque
-def optimized_solution(x, y, n):
-    visited = set()
-    visited.add(x)
-    queue = deque([(x, 0)])
-    while queue:
-        num, steps = queue.popleft()
-        if num == y:
-            return steps
-        for next_num in [num + n, num * 2, num * 3]:
-            if next_num > y:
-                continue
-            if next_num not in visited:
-                visited.add(next_num)
-                queue.append((next_num, steps + 1))
-    return -1 
-# 347.45ms, 58.6MB
-
-
 # 초기 코드
 from collections import deque
 def solution(x, y, n):
-    visited = [-1] * (y + 1)
-    visited[x] = 0
+    visited = [0] * (y + 1)
     queue = deque([x])
     while queue:
         num = queue.popleft()
-        for next_num in [num + n, num * 2, num * 3]:
-            if next_num > y:
-                continue
-            if visited[next_num] == -1 or visited[next_num] > visited[num] + 1:
+        next_numbers = [num + n, num * 2, num * 3]
+        if num == y:
+            return visited[y]
+        for next_num in next_numbers:
+            if next_num <= y and not visited[next_num]:
                 visited[next_num] = visited[num] + 1
                 queue.append(next_num)
-    return visited[y]
-# 540.18ms, 25.8MB
+    return -1 
+# 294.43ms, 25.8MB
 
 
 print(solution(x, y, n))

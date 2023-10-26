@@ -19,6 +19,44 @@ board = ["CCBDE", "AAADE", "AAABF", "CCBBF"]
 # answer = 14
 
 
+# 2차 수정 : 모듈화
+def rotate_board_90(board, m, n):
+    rotated = [[None] * m for _ in range(n)]
+    for y in range(m):
+        for x in range(n):
+            rotated[x][m - 1 - y] = board[y][x]
+    return rotated
+
+def find_blocks_to_remove(board, m, n):
+    to_remove = set()
+    for y in range(m - 1):
+        for x in range(n - 1):
+            if board[y][x] == board[y + 1][x] == board[y][x + 1] == board[y + 1][x + 1] != "":
+                to_remove.update({(y, x), (y + 1, x), (y, x + 1), (y + 1, x + 1)})
+    return to_remove
+
+def remove_blocks(board, blocks, m, n):
+    remove_block_cnt = len(blocks)
+    for y, x in blocks:
+        board[y][x] = ''
+    for y, row in enumerate(board):
+        board[y] = [i for i in row if i != '']
+        board[y].extend([''] * (n - len(board[y])))
+    return remove_block_cnt
+
+def solution(m, n, board):
+    rotated_board = rotate_board_90(board, m, n)
+    m, n = n, m
+    total_removed = 0
+    while True:
+        blocks = find_blocks_to_remove(rotated_board, m, n)
+        if not blocks:
+            break
+        total_removed += remove_blocks(rotated_board, blocks, m, n)
+    return total_removed
+# 44.52ms, 10.4MB
+
+
 # 1차 수정 : 로직 변경 및 모듈화
 def find_blocks_to_remove(board, m, n):
     to_remove = set()
@@ -29,20 +67,20 @@ def find_blocks_to_remove(board, m, n):
     return to_remove
 
 def remove_blocks(board, blocks, m, n):
-    answer = 0
+    remove_block_cnt = 0
     for y, x in blocks:
         board[y][x] = ""
-    answer += len(blocks)
+    remove_block_cnt += len(blocks)
     for x in range(n):
         col = [board[y][x] for y in range(m) if board[y][x] != ""]
         for y in range(m - len(col)):
             board[y][x] = ""
         for y in range(m - len(col), m):
             board[y][x] = col[y - (m - len(col))]
-    return answer
+    return remove_block_cnt
 
-def solution(m, n, input_board):
-    board = [list(row) for row in input_board]
+def solution(m, n, board):
+    board = [list(row) for row in board]
     total_removed = 0
     while True:
         blocks = find_blocks_to_remove(board, m, n)
@@ -51,6 +89,7 @@ def solution(m, n, input_board):
         total_removed += remove_blocks(board, blocks, m, n)
     return total_removed
 # 73.54ms, 10.2MB
+
 
 
 # 초기 코드

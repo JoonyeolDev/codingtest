@@ -66,13 +66,51 @@ record = ["Enter uid1234 Muzi",
 # result = ["Prodo님이 들어왔습니다.", "Ryan님이 들어왔습니다.", "Prodo님이 나갔습니다.", "Prodo님이 들어왔습니다."]
 
 
-# 1차 수정 : 코드 단순화
+# 2차 개선 : f-string → tuple
+def solution(record):
+    user_dict = {}
+    logs = []
+    for msg in record:
+        action, *user = msg.split(' ')
+        user_id = user[0]
+        if action == 'Leave':
+            logs.append((user_id, '님이 나갔습니다.'))
+        else:
+            user_dict[user_id] = user[1]
+            if action == 'Enter':
+                logs.append((user_id, '님이 들어왔습니다.'))
+    answer = [user_dict[uid] + msg for uid, msg in logs]
+    return answer
+# 106.36ms, 54.8MB
+
+
+# 1차 개선 : 로직 변경 및 f-string lazy evaluation
+def solution(record):
+    user_dict = {}
+    logs = []
+    for msg in record:
+        action, *user = msg.split()
+        user_id = user[0]
+        if action == 'Leave':
+            logs.append(lambda uid=user_id: f"{user_dict[uid]}님이 나갔습니다.")
+        else:
+            nickname = user[1]
+            user_dict[user_id] = nickname
+            if action == 'Enter':
+                logs.append(lambda uid=user_id: f"{user_dict[uid]}님이 들어왔습니다.")
+
+    answer = [func() for func in logs]
+    return answer
+# 197.56ms, 54.9MB
+
+
+# 초기 코드
 def solution(record):
     user_dict = {}
     for msg in record:
         action, user = msg.split(' ', 1)
         if action in ['Enter', 'Change']:
-            user_id, nickname = user.split()
+            user_id, nickname = user .split()
             user_dict[user_id] = nickname
 
     answer = []
@@ -87,42 +125,4 @@ def solution(record):
     return answer
 # 120.34ms, 42.6MB
 
-
-# 초기 코드
-class User:
-    def __init__(self, id, nickname):
-        self.id = id
-        self.nickname = nickname
-    
-    def enter(self):
-        return f'{self.nickname}님이 들어왔습니다.'
-    
-    def leave(self):
-        return f'{self.nickname}님이 나갔습니다.'
-    
-    def change_nickname(self, nickname):
-        self.nickname = nickname
-        
-def solution(record):
-    user_dict = {}
-    for msg in record:
-        action, user = msg.split(' ', 1)
-        if action in ['Enter', 'Change']:
-            user_id, nickname = user.split()
-            if user_id not in user_dict:
-                user_dict[user_id] = User(user_id, nickname)
-            else:
-                user_dict[user_id].change_nickname(nickname)
-
-    answer = []
-    for msg in record:
-        action, user = msg.split(' ', 1)
-        if action == 'Enter':
-            user_id = user.split()[0]
-            answer.append(user_dict[user_id].enter())
-        elif action == 'Leave':
-            user_id = user
-            answer.append(user_dict[user_id].leave())
-    return answer
-# 233.34ms, 53.7MB
 

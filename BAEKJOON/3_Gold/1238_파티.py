@@ -67,9 +67,7 @@ for _ in range(m):
 
 to_party = dijkstra(x, graph)
 to_home = dijkstra(x, reversed_graph)
-max_time = 0
-for i in range(1, n + 1):
-    max_time = max(max_time, to_home[i] + to_party[i])
+max_time = max(to_home[i] + to_party[i] for i in range(1, n + 1))
 
 print(max_time)
 # 36256KB, 88ms, 1017B

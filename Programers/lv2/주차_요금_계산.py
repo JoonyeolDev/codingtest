@@ -1,4 +1,4 @@
-# https://school.programmers.co.kr/learn/challenges?order=acceptance_desc&page=1&statuses=unsolved&languages=python3&levels=2
+# https://school.programmers.co.kr/learn/courses/30/lessons/92341
 # 주차 요금 계산
 # 문제 설명
 # 문제 설명
@@ -50,34 +50,39 @@
 fees = [1, 461, 1, 10]
 records = ["00:00 1234 IN"]
 
+from collections import defaultdict
+
 def solution(fees, records):
     base_time, base_fee, unit_time, unit_fee = fees
     park_dict = {}
-    fee_dict = {}
+    fee_dict = defaultdict(int)
+
     for recode in records:
         time, car_num, in_out = recode.split()
-        time = int(time.split(':')[0])*60+int(time.split(':')[1])
+        hour, minute = time.split(':')
+        time = int(hour) * 60 + int(minute)
         if in_out=='IN':
             park_dict[car_num] = time
         else:
-            parking_time = time-park_dict[car_num]
-            fee_dict[car_num] = fee_dict.get(car_num, 0) + parking_time
+            parking_time = time - park_dict[car_num]
+            fee_dict[car_num] += parking_time
             park_dict[car_num] = None
 
     for car_num in park_dict:
-        limit_time = 23*60+59
+        limit_time = 24 * 60 - 1
         if park_dict[car_num] is not None:
-            parking_time = limit_time-park_dict[car_num]
-            fee_dict[car_num] = fee_dict.get(car_num, 0) + parking_time
+            parking_time = limit_time - park_dict[car_num]
+            fee_dict[car_num] += parking_time
             park_dict[car_num] = None
 
     answer = []
     for car_num in fee_dict:
         if fee_dict[car_num] > base_time:
-            fee = ((fee_dict[car_num]-base_time+unit_time-1)//unit_time) * unit_fee + base_fee
+            fee = ((fee_dict[car_num] - base_time + unit_time - 1) // unit_time) * unit_fee + base_fee
         else:
             fee = base_fee
         fee_dict[car_num] = fee
 
     answer = [fee_dict[key] for key in sorted(fee_dict)]
     return answer
+
