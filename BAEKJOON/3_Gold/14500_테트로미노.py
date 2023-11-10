@@ -21,3 +21,40 @@
 from sys import stdin
 input = stdin.readline
 
+n, m = map(int, input().split())
+paper = [list(map(int, input().split())) for _ in range(n)]
+directions = [(1, 0), (0, 1), (-1, 0), (0, -1)]
+
+def dfs(x, y, depth, total):
+    if depth == 4:
+        return total
+
+    max_value = 0
+    for dx, dy in directions:
+        nx, ny = x + dx, y + dy
+        if 0 <= nx < n and 0 <= ny < m and not visited[nx][ny]:
+            visited[nx][ny] = True
+            max_value = max(max_value, dfs(nx, ny, depth + 1, total + paper[nx][ny]))
+            visited[nx][ny] = False
+
+    return max_value
+
+def check_o_shape(x, y):
+    candidates = [paper[x + dx][y + dy] for dx, dy in directions if 0 <= x + dx < n and 0 <= y + dy < m]
+
+    if len(candidates) >= 3:
+        candidates.sort(reverse=True)
+        return paper[x][y] + sum(candidates[:3])
+    return 0
+
+max_sum = 0
+visited = [[False] * m for _ in range(n)]
+for i in range(n):
+    for j in range(m):
+        visited[i][j] = True
+        max_sum = max(max_sum, dfs(i, j, 1, paper[i][j]))
+        visited[i][j] = False
+        max_sum = max(max_sum, check_o_shape(i, j))
+
+print(max_sum)
+# 38008KB, 5272ms, 1123B
