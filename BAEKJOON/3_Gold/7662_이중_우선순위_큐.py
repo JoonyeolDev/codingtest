@@ -14,30 +14,42 @@
 # 출력은 표준출력을 사용한다. 각 테스트 데이터에 대해, 모든 연산을 처리한 후 Q에 남아 있는 값 중 최댓값과 최솟값을 출력하라. 두 값은 한 줄에 출력하되 하나의 공백으로 구분하라. 만약 Q가 비어있다면 ‘EMPTY’를 출력하라.
 
 import heapq
-from collections import defaultdict
 from sys import stdin
 input = stdin.readline
 
-min_heap = []
-max_heap = []
-
-mark = defaultdict(int)
-
 for _ in range(int(input())):
-    for _ in range(int(input())):
+    k = int(input())
+    min_heap = []
+    max_heap = []
+    deleted = [True] * k
+    for i in range(k):
         char, n = input().split()
+        n = int(n)
         if char == 'I':
-            heapq.heappush(min_heap, int(n))
-            heapq.heappush(max_heap, -int(n))
-        elif not min_heap:
-            continue
-        elif n == '1':
-            max_num = - heapq.heappop(max_heap)
-            mark[max_num] += 1
+            heapq.heappush(min_heap, (n, i))
+            heapq.heappush(max_heap, (-n, i))
+            deleted[i] = False
         else:
-            min_num = heapq.heappop(min_heap)
-            mark[min_num] -= 1
+            if n == '1':
+                while max_heap and deleted[max_heap[0][1]]:
+                    heapq.heappop(max_heap)
+                if max_heap:
+                    _, idx = heapq.heappop(max_heap)
+                    deleted[idx] = True
+            else:
+                while min_heap and deleted[min_heap[0][1]]:
+                    heapq.heappop(min_heap)
+                if min_heap:
+                    _, idx = heapq.heappop(min_heap)
+                    deleted[idx] = True
+
+    while min_heap and deleted[min_heap[0][1]]:
+        heapq.heappop(min_heap)
+    while max_heap and deleted[max_heap[0][1]]:
+        heapq.heappop(max_heap)
+
     if min_heap:
-        print(-heapq.heappop(max_heap), heapq.heappop(min_heap))
+        print(-max_heap[0][0], min_heap[0][0])
     else:
         print('EMPTY')
+# 288140KB, 6980ms, 1158B
